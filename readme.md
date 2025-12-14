@@ -103,11 +103,11 @@ The DNN teacher model was trained using binary cross-entropy loss on ADASYN-bala
 ### Knowledge Distillation Loss
 Student models were trained using a composite loss that combined hard ground truth supervision with soft teacher guidance:
 
-\[
+$$\[
 \mathcal{L}_{KD} = \alpha \cdot \text{BCE}(y, p_s) + (1-\alpha) \cdot \text{KL}(p_t \parallel p_s)
-\]
+\]$$
 
-where \( y \) is the binary ground truth label, \( p_t \) is the teacher-predicted probability, \( p_s \) is the student-predicted probability, and \( \alpha = 0.7 \). This formulation encourages the student to match both correct classification behavior and the teacher’s confidence structure.
+where $$\( y \)$$ is the binary ground truth label, $$\( p_t \)$$ is the teacher-predicted probability, $$\( p_s \)$$ is the student-predicted probability, and $$\( \alpha = 0.7 \)$$. This formulation encourages the student to match both correct classification behavior and the teacher’s confidence structure.
 
 ### Control Models
 Control DNN and TCN models were trained without knowledge distillation and without EEG inputs. These baselines served to quantify the performance gains attributable specifically to teacher–student learning rather than architectural or preprocessing effects alone.
