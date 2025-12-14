@@ -1,7 +1,7 @@
 # ELEC509 Final Project  
 **Multimodal Seizure Detection via Teacher–Student Learning with Feature-Based DNNs and Raw TCN Models**
 
-## 📌 Overview
+## Overview
 This repository contains the code, experiments, and results for the ELEC509 final project on **multimodal seizure detection using wearable sensors**. We investigate a **teacher–student learning framework** that combines:
 
 - A **feature-based deep neural network (DNN) teacher** trained on EEG + ECG + EMG + motion features  
@@ -13,7 +13,7 @@ The goal is to evaluate whether **high-performing EEG-informed models can transf
 
 ---
 
-## 🧠 Key Contributions
+## Key Contributions
 - End-to-end **preprocessing (V5 pipeline)** for multimodal wearable data  
 - Comprehensive **feature engineering** across EEG, ECG, EMG, and motion  
 - **ADASYN-balanced DNN teacher** achieving strong AUROC and AUPR  
@@ -62,14 +62,14 @@ ELEC509-FINAL-PROJECT/
 └── .gitattributes
 ```
 
-## ⚙️ Preprocessing
+## Preprocessing
 Preprocessing was implemented in `preprocessing.ipynb` using the final **V5 pipeline** developed during iterative experimentation and validation. Raw multimodal wearable signals were first cleaned and standardized to ensure consistent downstream learning. Signals were segmented into fixed-length windows with modality-aware overlap strategies to address class imbalance at the data level. Background windows were extracted with 50% overlap, while seizure windows used 75% overlap to increase seizure sample density without artificial signal synthesis.
 
 All modalities were temporally aligned prior to windowing. EEG signals were processed at 250 Hz, while motion signals (accelerometer and gyroscope) were processed at 25 Hz and upsampled or aligned as needed. Window-level labels were assigned using seizure annotations such that a window was labeled positive if any seizure activity occurred within its temporal bounds. This preprocessing strategy ensured consistent sample construction across all models while preserving physiological signal integrity.
 
 ---
 
-## 🧬 Feature Engineering
+## Feature Engineering
 Feature extraction was implemented in `feature_extraction.ipynb`. Hand-engineered features were computed independently for each modality and then concatenated to form multimodal feature vectors for feature-based models.
 
 EEG features included time-domain statistics, frequency-domain power features, and time–frequency representations designed to capture seizure-related spectral signatures. ECG and EMG features focused on statistical descriptors and frequency-domain characteristics relevant to autonomic and muscular activity during seizures. Motion features were computed from both accelerometer and gyroscope signals, including per-axis statistics and triaxial vector magnitude features to capture gross motor activity.
@@ -78,7 +78,7 @@ All features were standardized prior to model training. Feature extraction was a
 
 ---
 
-## 🏗️ Model Architectures
+## Model Architectures
 
 ### DNN Teacher Model
 The teacher model was a fully connected deep neural network trained on the full multimodal feature set derived from EEG, ECG, EMG, and motion signals. The network consisted of four hidden layers with decreasing width (512, 256, 128, and 64 units), each followed by batch normalization and dropout for regularization. Swish activations were used throughout, and L2 weight regularization was applied to all dense layers to mitigate overfitting. A final sigmoid output layer produced continuous seizure probabilities used for downstream knowledge distillation.
@@ -95,7 +95,7 @@ Control TCN models and knowledge-distilled TCN students were trained to isolate 
 
 ---
 
-## 🧪 Training Strategy
+## Training Strategy
 
 ### Teacher Training
 The DNN teacher model was trained using binary cross-entropy loss on ADASYN-balanced data. Optimization used the Adam optimizer with learning rate scheduling and early stopping based on validation loss to prevent overfitting. The trained teacher produced probabilistic outputs for all training samples, which were stored and later used for student supervision.
@@ -114,11 +114,11 @@ Control DNN and TCN models were trained without knowledge distillation and witho
 
 ---
 
-## 📊 Training Behavior and Diagnostics
+## Training Behavior and Diagnostics
 Training and validation loss and accuracy curves were monitored for all models to assess optimization stability and overfitting. Feature-based DNN models demonstrated smooth convergence with closely aligned training and validation curves, indicating good generalization. The TCN models showed limited learning under the shared preprocessing pipeline, suggesting sensitivity to raw signal preprocessing choices rather than overfitting. These diagnostics motivated planned future refinements to the raw TCN preprocessing strategy.
 
 
-## ⚠️ Known Limitations
+## Known Limitations
 This study has several known limitations that should be considered when interpreting the results. First, the preprocessing and windowing pipeline was optimized primarily for feature-based learning and subsequently reused for raw time-series models. While this ensured experimental consistency across architectures, it likely disadvantaged the Temporal Convolutional Network (TCN), which is known to be sensitive to sampling rate, normalization strategy, and window overlap. In particular, the use of overlapping windows and z-score normalization via batch normalization layers differs from established TCN-based seizure detection pipelines that employ lower sampling rates, non-overlapping windows, and explicit min–max normalization.
 
 Second, class imbalance was addressed using different strategies across models. The feature-based teacher model leveraged ADASYN oversampling, while raw TCN models relied on class-weighted loss functions due to the incompatibility of synthetic oversampling with physiological time-series data. Although this choice was methodologically justified, it introduces asymmetry in the training conditions that may affect direct performance comparisons.
@@ -129,7 +129,7 @@ Finally, due to course timeline constraints, hyperparameter optimization and pre
 
 ---
 
-## 🔮 Future Work
+## Future Work
 Several directions for future work are planned to address these limitations and extend the current study. First, the raw TCN pipeline will be redesigned to more closely align with established best practices, including downsampling EEG signals, eliminating window overlap, and applying explicit signal-level normalization prior to model input. These changes are expected to significantly improve training stability and classification performance.
 
 Second, future TCN models will incorporate self-attention mechanisms and multiscale temporal feature fusion to better capture seizure onset dynamics and long-range dependencies. This will enable a more faithful comparison to state-of-the-art sequence-based seizure detection models.
@@ -140,7 +140,7 @@ Finally, this framework will be extended to patient-independent and cross-datase
 
 ---
 
-## 👥 Authors
+## Authors
 **Ibrahim Samhar Al-Akash**  
 Master of Bioengineering, Rice University  
 
