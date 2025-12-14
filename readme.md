@@ -60,6 +60,7 @@ ELEC509-FINAL-PROJECT/
 ├── TCN_Teacher_Model.ipynb
 ├── Dragonfly DNN Bonn EEG.ipynb
 └── .gitattributes
+```
 
 ## ⚙️ Preprocessing
 Preprocessing was implemented in `preprocessing.ipynb` using the final **V5 pipeline** developed during iterative experimentation and validation. Raw multimodal wearable signals were first cleaned and standardized to ensure consistent downstream learning. Signals were segmented into fixed-length windows with modality-aware overlap strategies to address class imbalance at the data level. Background windows were extracted with 50% overlap, while seizure windows used 75% overlap to increase seizure sample density without artificial signal synthesis.
